@@ -26,9 +26,9 @@ class Ship():
 		lista trafionych krotek)
 		"""
 		for position in self._positions:
-			if (self.hit.get(position,False)):
-				return True
-		return False
+			if not (self.hit.get(position,False)):
+				return False
+		return True
 	
 	def tryShoot(self,position):
 		"""
