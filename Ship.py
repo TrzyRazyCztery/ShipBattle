@@ -1,11 +1,12 @@
 class Ship():
 
-	def __init__ (self,position,direction,length):
+	def __init__ (self,position,direction,length,name):
 		'''
 		position - pozycja, krtka x,y
 		direction - kierunek h dla horizontal (poziom) v dla veritcal (pion)
 		length - dlugosc statku
 		'''
+		self.name = name
 		self.length = length
 		self.direction = direction
 		self.x = position[0]
