@@ -1,0 +1,9 @@
+(8,8)
+ship2 4
+ship3 3
+ship4 3
+ship5 2
+ship6 2
+ship7 1
+ship8 1
+ship9 1
