@@ -26,21 +26,71 @@ class Game():
 		"""	 
 		return [[" " for x in range(size[0])] for y in range(size[1]) ]
 
-	def __addingShip(self,config,position,direction):
+	def __addingShip(self,config,position,direction,name):
 		"""
 		podajac linijke z pliku konfiguracyjnego postaci (Nazwa liczba) pozycje i polozenie
 		tworzy nowy obiekt statek o w/w parametrach
 		"""
-		globals()[config[0]] = eval("Ship(position,direction,"+config[1]+")")
+		globals()[config[0]] = eval("Ship(position,direction,"+config[1]+","+"config[0]"+ ")")
 		return(eval(config[0]))
 
-	def isFinished():
+	def isFinished(self):
 		"""
-		sprawdzamy cz gra nie zakończyła sie 
+		sprawdzamy czy gra sie nie zakończyła
 		"""
-		#for i in listaStatkow:
+		for ship in self.shipList:
+			if (ship.isDestroyed() == False):
+				return False
+		return True
+
+	def game(self):
+		"""
+		Główna pętla gry wywołuje sie do czasu gdy wszystkie statki beda rozbite
+		"""
+		counter = 0
+		while not self.isFinished():
+			counter += 1	
+			position = input("write coordinates (like A7)  : ")
+			alphabet = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z".split(" ")
+			try:
+				self.turn((int(alphabet.index(position[0])),int(position[1:])))
+			except:
+				print("index must be in map")
+		print("Congratulations, you finished in",counter,"moves")
 
 
+	def turn(self,coordinates):
+		"""
+		sterowanie tura
+		"""
+		print(coordinates)
+		self.shoot(coordinates)
+		self.printMap()
+
+				
+	def shoot(self,position):
+		"""
+		funkcja zwraca trafienie z nazwa i dlugoscia jesli nasz punkt jest czescia jakiegos statku
+		i oznacza to miejsce na mapie O jesli ie trafimy jest X
+		"""
+		for ship in self.shipList:
+			if (ship.tryShoot(position)):
+				ship.shoot(position)
+				print ("You shot in",ship.name," size: ",ship.length)
+				self._map[position[1]][position[0]] = "O"
+				if (ship.isDestroyed()):
+					print("sunken")
+				return True
+		print(position[1],position[0])		
+		self._map[position[1]][position[0]] = "X"
+		print("miss")
+		return False		
+
+	def printMap(self):
+		alphabet = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z".split(" ")
+		print("X",alphabet[:len(self._map)])
+		for i in range(1, len(self._map)+1):
+			print (i-1,self._map[i-1])
 
 	def shipPositioning(self):
 		"""
@@ -81,12 +131,9 @@ class Game():
 							for k in range(size+2):
 								trash[(x+j,y-1+k)] = True
 							
-			shipList.append(self.__addingShip(self._config[i],(x,y),direction))						
+			shipList.append(self.__addingShip(self._config[i],(x,y),direction,self._config[i][0]))						
 		return shipList		
 
+a = Game()
 
-
-
-
-
-
+a.game()
