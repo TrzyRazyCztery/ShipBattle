@@ -20,7 +20,7 @@ class Ship():
 	def positions(self):
 		return self._positions
 
-	def isDestoryed(self):
+	def isDestroyed(self):
 		"""
 		Czy statek jest zniszczony, porównuje liste krotek statku z 
 		lista trafionych krotek)
